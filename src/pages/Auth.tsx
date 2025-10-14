@@ -11,7 +11,7 @@ import { Session } from "@supabase/supabase-js";
 export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isSignUp, setIsSignUp] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const navigate = useNavigate();
@@ -42,35 +42,17 @@ export default function Auth() {
     setLoading(true);
 
     try {
-      if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/admin`
-          }
-        });
-        
-        if (error) throw error;
-        
-        toast({
-          title: "Conta criada com sucesso! 💕",
-          description: "Você já pode fazer login.",
-        });
-        setIsSignUp(false);
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        
-        if (error) throw error;
-        
-        toast({
-          title: "Bem-vinda de volta! 💕",
-          description: "Login realizado com sucesso.",
-        });
-      }
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      
+      if (error) throw error;
+      
+      toast({
+        title: "Bem-vinda de volta! 💕",
+        description: "Login realizado com sucesso.",
+      });
     } catch (error: any) {
       toast({
         title: "Ops! 😢",
@@ -97,12 +79,10 @@ export default function Auth() {
             <Heart className="w-8 h-8 text-primary animate-heart-beat" fill="currentColor" />
           </div>
           <CardTitle className="text-2xl text-primary">
-            {isSignUp ? "Criar Conta" : "Entrar"}
+            Entrar
           </CardTitle>
           <CardDescription>
-            {isSignUp 
-              ? "Crie sua conta para gerenciar as pulseirinhas 💕" 
-              : "Entre para acessar o painel administrativo ✨"}
+            Entre para acessar o painel administrativo ✨
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -134,21 +114,11 @@ export default function Auth() {
               size="lg"
               disabled={loading}
             >
-              {loading ? "Aguarde..." : isSignUp ? "Criar Conta" : "Entrar"}
+              {loading ? "Aguarde..." : "Entrar"}
             </Button>
           </form>
 
-          <div className="mt-4 text-center">
-            <Button
-              variant="link"
-              onClick={() => setIsSignUp(!isSignUp)}
-              className="text-primary hover:text-primary/80"
-            >
-              {isSignUp 
-                ? "Já tem uma conta? Entre aqui" 
-                : "Não tem conta? Crie uma aqui"}
-            </Button>
-          </div>
+
         </CardContent>
       </Card>
     </div>

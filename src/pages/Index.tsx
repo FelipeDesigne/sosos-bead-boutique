@@ -81,7 +81,7 @@ export default function Index() {
   const handleCheckout = () => {
     if (cartItems.length === 0) return;
 
-    const whatsappNumber = "5511999999999"; // SUBSTITUIR PELO NÚMERO REAL
+    const whatsappNumber = "5514981181568"; // SUBSTITUIR PELO NÚMERO REAL
     const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     
     let message = "Olá Soso 💕! Quero comprar essas pulseirinhas:\n\n";
